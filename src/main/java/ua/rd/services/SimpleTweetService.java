@@ -1,28 +1,41 @@
 package ua.rd.services;
 
 import ua.rd.domain.Tweet;
+import ua.rd.ioc.Context;
 import ua.rd.repository.TweetRepository;
 
 /*
-LazyTweetProxy extends Tweet{
-    String bean;
-    Tweet getInstance(){
-        appContext.getBean(bean);
-        }
+class PrototypeTweetProxy implements TweetService {
+
+    private Context context;
+    private TweetService tweetService;
+
+    public PrototypeTweetProxy(TweetService tweetService, Context context) {
+        this.context = context;
     }
 
+    @Override
+    public Iterable<Tweet> allTweets() {
+        return tweetService.allTweets();
+    }
 
+    @Override
+    public TweetRepository getRepository() {
+        return tweetService.getRepository();
+    }
 
-    tweet = LazyTweetProxy("tweet").getInstance;
- */
+    @Override
+    public Tweet newTweet() {
+        return (Tweet) context.getBean("tweet");
+    }
+}
+*/
 
 public class SimpleTweetService implements TweetService {
     private final TweetRepository tweetRepository;
-    private Tweet tweet;
 
-    public SimpleTweetService(TweetRepository tweetRepository, Tweet tweet) {
+    public SimpleTweetService(TweetRepository tweetRepository) {
         this.tweetRepository = tweetRepository;
-        this.tweet = tweet;
     }
 
 
@@ -37,8 +50,5 @@ public class SimpleTweetService implements TweetService {
         return tweetRepository;
     }
 
-    @Override
-    public Tweet newTweet() {
-        return new Tweet();
-    }
+
 }
